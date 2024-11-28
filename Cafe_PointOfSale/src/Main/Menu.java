@@ -2,52 +2,57 @@
 package Main;
 
 import Functions.Order;
+import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 public class Menu extends javax.swing.JFrame {
     DefaultTableModel table;
-    int tableRow = 0;
-    String item[] = new String[99];
-    int count[] = new int[99];
-    int size[] = new int[99];
-    double price[] = new double[99];
-    int j = 0;
     
+    ArrayList<String> item = new ArrayList<String>();
+    ArrayList<Integer> quantity = new ArrayList<Integer>();
+    ArrayList<Double> price = new ArrayList<Double>(); 
+        
     public Menu() {
         initComponents();
         table = new DefaultTableModel(new String[]{"Item", "Price"}, 0);
         jTable2.setModel(table);
     }
-
-    public int setTable(String name, boolean isAdding){
-        for(int i = 0; i < item.length; i++){
-            if(item[i] == name){
-                String t = table.getValueAt(i, 0).toString();
-                if(count[i] == 1 && !isAdding){
-                    item[i] = null;
-                    count[i] = 0;
-                    table.removeRow(i);
+    
+    public void setItem(String item, double price, boolean isAdding){
+        if(isAdding){
+            if(this.item.contains(item)){
+                int i = this.item.indexOf(item);
+                this.price.set(i, this.price.get(i)+price);
+                quantity.set(i, quantity.get(i)+1);
+            }else{
+                this.item.add(item);
+                this.price.add(price);
+                quantity.add(1);
+            }
+        }else{
+            if(this.item.contains(item)){
+                if(quantity.get(this.item.indexOf(item)) <= 1){
+                    quantity.remove(this.item.indexOf(item));
+                    this.price.remove(this.item.indexOf(item));
+                    this.item.remove(item);
                 }else{
-                    if(isAdding){
-                        count[i]++;
-                    }else{
-                        count[i]--;
-                    }
-                    table.setValueAt(name +" x " +count[i], i, 0);
+                    int i = this.item.indexOf(item);
+                    this.price.set(i, this.price.get(i)-price);
+                    quantity.set(i, quantity.get(i)-1);
                 }
-                return 0;
-            }else if(item[i] == null){
-                item[i] = name;
-                table.setRowCount(i+1);
-                count[i]++;
-                table.setValueAt(name +" x " +count[i], i, 0);
-                j++;
-                return 0;
             }
         }
-        System.out.println(table.getRowCount());
-        System.out.println(item[0]);
-        return 0;
+    }
+
+    public void setTable(){
+        table.setRowCount(0);
+        int rowForCol1 = 0;
+        for(String items : item){
+            rowForCol1++;
+            table.setRowCount(rowForCol1);
+            table.setValueAt(items +" x " +quantity.get(rowForCol1-1), rowForCol1-1, 0);
+            table.setValueAt(price.get(rowForCol1-1), rowForCol1-1, 1);
+        }
     }
    
     @SuppressWarnings("unchecked")
@@ -62,114 +67,139 @@ public class Menu extends javax.swing.JFrame {
         cCreamBtns = new javax.swing.ButtonGroup();
         dDelightBtns = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        cappuccino = new javax.swing.JCheckBox();
-        Americano = new javax.swing.JCheckBox();
+        menuLabell = new javax.swing.JLabel();
+        header = new javax.swing.JLabel();
+        year = new javax.swing.JLabel();
+        itemSelection = new javax.swing.JPanel();
+        headerPriceSmall = new javax.swing.JLabel();
+        headerPriceMedium = new javax.swing.JLabel();
+        headerPriceLarge = new javax.swing.JLabel();
         Espresso = new javax.swing.JCheckBox();
+        espressoSmallAdd = new javax.swing.JLabel();
+        espressoSmallSubtract = new javax.swing.JLabel();
+        espressoMediumAdd = new javax.swing.JLabel();
+        espressoMediumSubtract = new javax.swing.JLabel();
+        espresssoLargeAdd = new javax.swing.JLabel();
+        espresssoLargeSubtract = new javax.swing.JLabel();
+        espressoPriceSmall = new javax.swing.JLabel();
+        espressoPriceMedium = new javax.swing.JLabel();
+        espressoPriceLarge = new javax.swing.JLabel();
+        Americano = new javax.swing.JCheckBox();
+        americanoSmallAdd = new javax.swing.JLabel();
+        americanoSmallSubtract = new javax.swing.JLabel();
+        americanoPriceSmall = new javax.swing.JLabel();
+        americanoMediumAdd = new javax.swing.JLabel();
+        americanoMediumSubtract = new javax.swing.JLabel();
+        americanoPriceMedium = new javax.swing.JLabel();
+        americanoLargeAdd = new javax.swing.JLabel();
+        americanoLargeSubtract = new javax.swing.JLabel();
+        americanoPriceLarge = new javax.swing.JLabel();
+        cappuccino = new javax.swing.JCheckBox();
+        cappuccinoSmallAdd = new javax.swing.JLabel();
+        cappuccinoSmallSubtract = new javax.swing.JLabel();
+        cappuccinoMediumAdd = new javax.swing.JLabel();
+        cappuccinoMediumSubtract = new javax.swing.JLabel();
+        cappuccinoPriceMedium = new javax.swing.JLabel();
+        cappuccinoLargeAdd = new javax.swing.JLabel();
+        cappuccinoLargeSubtract = new javax.swing.JLabel();
+        cappuccinoPriceLarge = new javax.swing.JLabel();
+        cappuccinoPriceSmall = new javax.swing.JLabel();
         macchiato = new javax.swing.JCheckBox();
+        macchiatoSmallAdd = new javax.swing.JLabel();
+        macchiatoSmallSubtract = new javax.swing.JLabel();
+        macchiatoPriceSmall = new javax.swing.JLabel();
+        macchiatoMediumAdd = new javax.swing.JLabel();
+        macchiatoMediumSubtract = new javax.swing.JLabel();
+        macchiatoPriceMedium = new javax.swing.JLabel();
+        macchiatoLargeAdd = new javax.swing.JLabel();
+        macchiatoLargeSubtract = new javax.swing.JLabel();
+        macchiatoPriceLarge = new javax.swing.JLabel();
         caramelC = new javax.swing.JCheckBox();
+        caramelCPriceLarge = new javax.swing.JLabel();
+        caramelCSmallAdd = new javax.swing.JLabel();
+        caramelCSmallSubtract = new javax.swing.JLabel();
+        caramelCPriceSmall = new javax.swing.JLabel();
+        caramelCMediumAdd = new javax.swing.JLabel();
+        caramelCMediumSubtract = new javax.swing.JLabel();
+        caramelCPriceMedium = new javax.swing.JLabel();
+        caramelCLargeAdd = new javax.swing.JLabel();
+        caramelCLargeSubtract = new javax.swing.JLabel();
         decafD = new javax.swing.JCheckBox();
+        decafDSmallAdd = new javax.swing.JLabel();
+        decafDSmallSubtract = new javax.swing.JLabel();
+        decafDPriceSmall = new javax.swing.JLabel();
+        decafDMediumAdd = new javax.swing.JLabel();
+        decafDMediumSubtract = new javax.swing.JLabel();
+        decafDPriceMedium = new javax.swing.JLabel();
+        decafDLargeAdd = new javax.swing.JLabel();
+        decafDLargeSubtract = new javax.swing.JLabel();
+        decafDPriceLarge = new javax.swing.JLabel();
         iceCoffee = new javax.swing.JCheckBox();
-        jCheckBox8 = new javax.swing.JCheckBox();
-        jCheckBox9 = new javax.swing.JCheckBox();
+        iceCoffeeSmallSubtract = new javax.swing.JLabel();
+        iceCoffeePriceSmall = new javax.swing.JLabel();
+        iceCoffeeSmallAdd = new javax.swing.JLabel();
+        iceCoffeeMediumAdd = new javax.swing.JLabel();
+        iceCoffeeMediumSubtract = new javax.swing.JLabel();
+        iceCoffeePriceMedium = new javax.swing.JLabel();
+        iceCoffeeLargeAdd = new javax.swing.JLabel();
+        iceCoffeeLargeSubtract = new javax.swing.JLabel();
+        iceCoffeePriceLarge = new javax.swing.JLabel();
+        cheesecakePrice = new javax.swing.JLabel();
+        croissantPrice = new javax.swing.JLabel();
+        browniesPrice = new javax.swing.JLabel();
+        strawBerryPrice = new javax.swing.JLabel();
+        chocolatePrice = new javax.swing.JLabel();
         jCheckBox10 = new javax.swing.JCheckBox();
-        jCheckBox11 = new javax.swing.JCheckBox();
+        jCheckBox8 = new javax.swing.JCheckBox();
         jCheckBox12 = new javax.swing.JCheckBox();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel16 = new javax.swing.JLabel();
-        cSmall = new javax.swing.JCheckBox();
-        aSmall = new javax.swing.JCheckBox();
-        cMSmall = new javax.swing.JCheckBox();
-        ccSmall = new javax.swing.JCheckBox();
-        ddSmall = new javax.swing.JCheckBox();
-        icSmall = new javax.swing.JCheckBox();
-        cMedium = new javax.swing.JCheckBox();
-        aMedium = new javax.swing.JCheckBox();
-        cmMedium = new javax.swing.JCheckBox();
-        ccMedium = new javax.swing.JCheckBox();
-        ddMedium = new javax.swing.JCheckBox();
-        icMedium = new javax.swing.JCheckBox();
-        cLarge = new javax.swing.JCheckBox();
-        aLarge = new javax.swing.JCheckBox();
-        cMLarge = new javax.swing.JCheckBox();
-        ccLarge = new javax.swing.JCheckBox();
-        ddLarge = new javax.swing.JCheckBox();
-        icLarge = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
-        jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
+        jCheckBox9 = new javax.swing.JCheckBox();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        jCheckBox11 = new javax.swing.JCheckBox();
+        jButton1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         backGround = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(600, 539));
+        setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 153, 0));
-        jLabel4.setText("Menu");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(265, 90, 70, 20));
+        menuLabell.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        menuLabell.setForeground(new java.awt.Color(255, 153, 0));
+        menuLabell.setText("Menu");
+        jPanel1.add(menuLabell, new org.netbeans.lib.awtextra.AbsoluteConstraints(265, 90, 70, 20));
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 102, 0));
-        jLabel2.setText("TnC Cafe");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        header.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        header.setForeground(new java.awt.Color(255, 102, 0));
+        header.setText("TnC Cafe");
+        jPanel1.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Since 2024");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
+        year.setForeground(new java.awt.Color(255, 255, 255));
+        year.setText("Since 2024");
+        jPanel1.add(year, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 153, 0));
-        jLabel5.setText("Coffee");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
+        itemSelection.setBackground(new java.awt.Color(0, 0, 0, 0));
+        itemSelection.setOpaque(false);
+        itemSelection.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 153, 0));
-        jLabel6.setText("Foods");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 340, -1, -1));
+        headerPriceSmall.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        headerPriceSmall.setForeground(new java.awt.Color(255, 102, 0));
+        headerPriceSmall.setText("Small");
+        itemSelection.add(headerPriceSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 10, -1, -1));
 
-        cappuccino.setBackground(new java.awt.Color(51, 51, 51));
-        cappuccino.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        cappuccino.setForeground(new java.awt.Color(255, 255, 255));
-        cappuccino.setText("Cappuccino");
-        cappuccino.setContentAreaFilled(false);
-        cappuccino.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cappuccinoActionPerformed(evt);
-            }
-        });
-        jPanel1.add(cappuccino, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 240, -1, -1));
+        headerPriceMedium.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        headerPriceMedium.setForeground(new java.awt.Color(255, 102, 0));
+        headerPriceMedium.setText("Medium");
+        itemSelection.add(headerPriceMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 10, -1, -1));
 
-        Americano.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        Americano.setForeground(new java.awt.Color(255, 255, 255));
-        Americano.setText("Americano");
-        Americano.setContentAreaFilled(false);
-        Americano.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AmericanoActionPerformed(evt);
-            }
-        });
-        jPanel1.add(Americano, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, -1, -1));
+        headerPriceLarge.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        headerPriceLarge.setForeground(new java.awt.Color(255, 102, 0));
+        headerPriceLarge.setText("Large");
+        itemSelection.add(headerPriceLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 10, -1, -1));
 
         Espresso.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         Espresso.setForeground(new java.awt.Color(255, 255, 255));
@@ -180,51 +210,570 @@ public class Menu extends javax.swing.JFrame {
                 EspressoActionPerformed(evt);
             }
         });
-        jPanel1.add(Espresso, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, -1, -1));
+        itemSelection.add(Espresso, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
+
+        espressoSmallAdd.setBackground(new java.awt.Color(0, 153, 0));
+        espressoSmallAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        espressoSmallAdd.setForeground(new java.awt.Color(255, 255, 255));
+        espressoSmallAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        espressoSmallAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        espressoSmallAdd.setOpaque(true);
+        espressoSmallAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                espressoSmallAddMouseClicked(evt);
+            }
+        });
+        itemSelection.add(espressoSmallAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 30, 15, 15));
+
+        espressoSmallSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        espressoSmallSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        espressoSmallSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        espressoSmallSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        espressoSmallSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        espressoSmallSubtract.setOpaque(true);
+        espressoSmallSubtract.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                espressoSmallSubtractMouseClicked(evt);
+            }
+        });
+        itemSelection.add(espressoSmallSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, 15, 15));
+
+        espressoMediumAdd.setBackground(new java.awt.Color(0, 153, 0));
+        espressoMediumAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        espressoMediumAdd.setForeground(new java.awt.Color(255, 255, 255));
+        espressoMediumAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        espressoMediumAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        espressoMediumAdd.setOpaque(true);
+        espressoMediumAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                espressoMediumAddMouseClicked(evt);
+            }
+        });
+        itemSelection.add(espressoMediumAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 30, 15, 15));
+
+        espressoMediumSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        espressoMediumSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        espressoMediumSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        espressoMediumSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        espressoMediumSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        espressoMediumSubtract.setOpaque(true);
+        itemSelection.add(espressoMediumSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 30, 15, 15));
+
+        espresssoLargeAdd.setBackground(new java.awt.Color(0, 153, 0));
+        espresssoLargeAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        espresssoLargeAdd.setForeground(new java.awt.Color(255, 255, 255));
+        espresssoLargeAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        espresssoLargeAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        espresssoLargeAdd.setOpaque(true);
+        itemSelection.add(espresssoLargeAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 30, 15, 15));
+
+        espresssoLargeSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        espresssoLargeSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        espresssoLargeSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        espresssoLargeSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        espresssoLargeSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        espresssoLargeSubtract.setOpaque(true);
+        itemSelection.add(espresssoLargeSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 30, 15, 15));
+
+        espressoPriceSmall.setForeground(new java.awt.Color(255, 255, 255));
+        espressoPriceSmall.setText("₱75.00");
+        itemSelection.add(espressoPriceSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 30, -1, -1));
+
+        espressoPriceMedium.setForeground(new java.awt.Color(255, 255, 255));
+        espressoPriceMedium.setText("₱95.00");
+        itemSelection.add(espressoPriceMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 30, -1, -1));
+
+        espressoPriceLarge.setForeground(new java.awt.Color(255, 255, 255));
+        espressoPriceLarge.setText("₱125.00");
+        itemSelection.add(espressoPriceLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 30, -1, -1));
+
+        Americano.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        Americano.setForeground(new java.awt.Color(255, 255, 255));
+        Americano.setText("Americano");
+        Americano.setContentAreaFilled(false);
+        itemSelection.add(Americano, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 50, -1, -1));
+
+        americanoSmallAdd.setBackground(new java.awt.Color(0, 153, 0));
+        americanoSmallAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        americanoSmallAdd.setForeground(new java.awt.Color(255, 255, 255));
+        americanoSmallAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        americanoSmallAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        americanoSmallAdd.setOpaque(true);
+        americanoSmallAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                americanoSmallAddMouseClicked(evt);
+            }
+        });
+        itemSelection.add(americanoSmallAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 15, 15));
+
+        americanoSmallSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        americanoSmallSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        americanoSmallSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        americanoSmallSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        americanoSmallSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        americanoSmallSubtract.setOpaque(true);
+        americanoSmallSubtract.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                americanoSmallSubtractMouseClicked(evt);
+            }
+        });
+        itemSelection.add(americanoSmallSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 15, 15));
+
+        americanoPriceSmall.setForeground(new java.awt.Color(255, 255, 255));
+        americanoPriceSmall.setText("₱75.00");
+        itemSelection.add(americanoPriceSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 50, -1, -1));
+
+        americanoMediumAdd.setBackground(new java.awt.Color(0, 153, 0));
+        americanoMediumAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        americanoMediumAdd.setForeground(new java.awt.Color(255, 255, 255));
+        americanoMediumAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        americanoMediumAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        americanoMediumAdd.setOpaque(true);
+        itemSelection.add(americanoMediumAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 15, 15));
+
+        americanoMediumSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        americanoMediumSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        americanoMediumSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        americanoMediumSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        americanoMediumSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        americanoMediumSubtract.setOpaque(true);
+        itemSelection.add(americanoMediumSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 50, 15, 15));
+
+        americanoPriceMedium.setForeground(new java.awt.Color(255, 255, 255));
+        americanoPriceMedium.setText("₱95.00");
+        itemSelection.add(americanoPriceMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, -1, -1));
+
+        americanoLargeAdd.setBackground(new java.awt.Color(0, 153, 0));
+        americanoLargeAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        americanoLargeAdd.setForeground(new java.awt.Color(255, 255, 255));
+        americanoLargeAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        americanoLargeAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        americanoLargeAdd.setOpaque(true);
+        itemSelection.add(americanoLargeAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 50, 15, 15));
+
+        americanoLargeSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        americanoLargeSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        americanoLargeSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        americanoLargeSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        americanoLargeSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        americanoLargeSubtract.setOpaque(true);
+        itemSelection.add(americanoLargeSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 50, 15, 15));
+
+        americanoPriceLarge.setForeground(new java.awt.Color(255, 255, 255));
+        americanoPriceLarge.setText("₱125.00");
+        itemSelection.add(americanoPriceLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 50, -1, -1));
+
+        cappuccino.setBackground(new java.awt.Color(51, 51, 51));
+        cappuccino.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        cappuccino.setForeground(new java.awt.Color(255, 255, 255));
+        cappuccino.setText("Cappuccino");
+        cappuccino.setContentAreaFilled(false);
+        itemSelection.add(cappuccino, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, -1, -1));
+
+        cappuccinoSmallAdd.setBackground(new java.awt.Color(0, 153, 0));
+        cappuccinoSmallAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cappuccinoSmallAdd.setForeground(new java.awt.Color(255, 255, 255));
+        cappuccinoSmallAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        cappuccinoSmallAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        cappuccinoSmallAdd.setOpaque(true);
+        cappuccinoSmallAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cappuccinoSmallAddMouseClicked(evt);
+            }
+        });
+        itemSelection.add(cappuccinoSmallAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, 15, 15));
+
+        cappuccinoSmallSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        cappuccinoSmallSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cappuccinoSmallSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        cappuccinoSmallSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        cappuccinoSmallSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        cappuccinoSmallSubtract.setOpaque(true);
+        cappuccinoSmallSubtract.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cappuccinoSmallSubtractMouseClicked(evt);
+            }
+        });
+        itemSelection.add(cappuccinoSmallSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 70, 15, 15));
+
+        cappuccinoMediumAdd.setBackground(new java.awt.Color(0, 153, 0));
+        cappuccinoMediumAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cappuccinoMediumAdd.setForeground(new java.awt.Color(255, 255, 255));
+        cappuccinoMediumAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        cappuccinoMediumAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        cappuccinoMediumAdd.setOpaque(true);
+        itemSelection.add(cappuccinoMediumAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 70, 15, 15));
+
+        cappuccinoMediumSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        cappuccinoMediumSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cappuccinoMediumSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        cappuccinoMediumSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        cappuccinoMediumSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        cappuccinoMediumSubtract.setOpaque(true);
+        itemSelection.add(cappuccinoMediumSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 70, 15, 15));
+
+        cappuccinoPriceMedium.setForeground(new java.awt.Color(255, 255, 255));
+        cappuccinoPriceMedium.setText("₱95.00");
+        itemSelection.add(cappuccinoPriceMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, -1, -1));
+
+        cappuccinoLargeAdd.setBackground(new java.awt.Color(0, 153, 0));
+        cappuccinoLargeAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cappuccinoLargeAdd.setForeground(new java.awt.Color(255, 255, 255));
+        cappuccinoLargeAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        cappuccinoLargeAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        cappuccinoLargeAdd.setOpaque(true);
+        itemSelection.add(cappuccinoLargeAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 70, 15, 15));
+
+        cappuccinoLargeSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        cappuccinoLargeSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        cappuccinoLargeSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        cappuccinoLargeSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        cappuccinoLargeSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        cappuccinoLargeSubtract.setOpaque(true);
+        itemSelection.add(cappuccinoLargeSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, 15, 15));
+
+        cappuccinoPriceLarge.setForeground(new java.awt.Color(255, 255, 255));
+        cappuccinoPriceLarge.setText("₱125.00");
+        itemSelection.add(cappuccinoPriceLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 70, -1, -1));
+
+        cappuccinoPriceSmall.setForeground(new java.awt.Color(255, 255, 255));
+        cappuccinoPriceSmall.setText("₱75.00");
+        itemSelection.add(cappuccinoPriceSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 70, -1, -1));
 
         macchiato.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         macchiato.setForeground(new java.awt.Color(255, 255, 255));
         macchiato.setText("Caffe Macchiato");
         macchiato.setContentAreaFilled(false);
-        macchiato.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                macchiatoActionPerformed(evt);
+        itemSelection.add(macchiato, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, -1, -1));
+
+        macchiatoSmallAdd.setBackground(new java.awt.Color(0, 153, 0));
+        macchiatoSmallAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        macchiatoSmallAdd.setForeground(new java.awt.Color(255, 255, 255));
+        macchiatoSmallAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        macchiatoSmallAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        macchiatoSmallAdd.setOpaque(true);
+        macchiatoSmallAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                macchiatoSmallAddMouseClicked(evt);
             }
         });
-        jPanel1.add(macchiato, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 260, -1, -1));
+        itemSelection.add(macchiatoSmallAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 90, 15, 15));
+
+        macchiatoSmallSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        macchiatoSmallSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        macchiatoSmallSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        macchiatoSmallSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        macchiatoSmallSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        macchiatoSmallSubtract.setOpaque(true);
+        macchiatoSmallSubtract.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                macchiatoSmallSubtractMouseClicked(evt);
+            }
+        });
+        itemSelection.add(macchiatoSmallSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 15, 15));
+
+        macchiatoPriceSmall.setForeground(new java.awt.Color(255, 255, 255));
+        macchiatoPriceSmall.setText("₱75.00");
+        itemSelection.add(macchiatoPriceSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 90, -1, -1));
+
+        macchiatoMediumAdd.setBackground(new java.awt.Color(0, 153, 0));
+        macchiatoMediumAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        macchiatoMediumAdd.setForeground(new java.awt.Color(255, 255, 255));
+        macchiatoMediumAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        macchiatoMediumAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        macchiatoMediumAdd.setOpaque(true);
+        itemSelection.add(macchiatoMediumAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 15, 15));
+
+        macchiatoMediumSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        macchiatoMediumSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        macchiatoMediumSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        macchiatoMediumSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        macchiatoMediumSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        macchiatoMediumSubtract.setOpaque(true);
+        itemSelection.add(macchiatoMediumSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 90, 15, 15));
+
+        macchiatoPriceMedium.setForeground(new java.awt.Color(255, 255, 255));
+        macchiatoPriceMedium.setText("₱95.00");
+        itemSelection.add(macchiatoPriceMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 90, -1, -1));
+
+        macchiatoLargeAdd.setBackground(new java.awt.Color(0, 153, 0));
+        macchiatoLargeAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        macchiatoLargeAdd.setForeground(new java.awt.Color(255, 255, 255));
+        macchiatoLargeAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        macchiatoLargeAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        macchiatoLargeAdd.setOpaque(true);
+        itemSelection.add(macchiatoLargeAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 90, 15, 15));
+
+        macchiatoLargeSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        macchiatoLargeSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        macchiatoLargeSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        macchiatoLargeSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        macchiatoLargeSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        macchiatoLargeSubtract.setOpaque(true);
+        itemSelection.add(macchiatoLargeSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 90, 15, 15));
+
+        macchiatoPriceLarge.setForeground(new java.awt.Color(255, 255, 255));
+        macchiatoPriceLarge.setText("₱125.00");
+        itemSelection.add(macchiatoPriceLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 90, -1, -1));
 
         caramelC.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         caramelC.setForeground(new java.awt.Color(255, 255, 255));
         caramelC.setText("Caramel Cream");
         caramelC.setContentAreaFilled(false);
-        caramelC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                caramelCActionPerformed(evt);
+        itemSelection.add(caramelC, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
+
+        caramelCPriceLarge.setForeground(new java.awt.Color(255, 255, 255));
+        caramelCPriceLarge.setText("₱125.00");
+        itemSelection.add(caramelCPriceLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 110, -1, -1));
+
+        caramelCSmallAdd.setBackground(new java.awt.Color(0, 153, 0));
+        caramelCSmallAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        caramelCSmallAdd.setForeground(new java.awt.Color(255, 255, 255));
+        caramelCSmallAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        caramelCSmallAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        caramelCSmallAdd.setOpaque(true);
+        caramelCSmallAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                caramelCSmallAddMouseClicked(evt);
             }
         });
-        jPanel1.add(caramelC, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, -1, -1));
+        itemSelection.add(caramelCSmallAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 110, 15, 15));
+
+        caramelCSmallSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        caramelCSmallSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        caramelCSmallSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        caramelCSmallSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        caramelCSmallSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        caramelCSmallSubtract.setOpaque(true);
+        caramelCSmallSubtract.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                caramelCSmallSubtractMouseClicked(evt);
+            }
+        });
+        itemSelection.add(caramelCSmallSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 15, 15));
+
+        caramelCPriceSmall.setForeground(new java.awt.Color(255, 255, 255));
+        caramelCPriceSmall.setText("₱75.00");
+        itemSelection.add(caramelCPriceSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, -1, -1));
+
+        caramelCMediumAdd.setBackground(new java.awt.Color(0, 153, 0));
+        caramelCMediumAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        caramelCMediumAdd.setForeground(new java.awt.Color(255, 255, 255));
+        caramelCMediumAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        caramelCMediumAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        caramelCMediumAdd.setOpaque(true);
+        itemSelection.add(caramelCMediumAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 15, 15));
+
+        caramelCMediumSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        caramelCMediumSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        caramelCMediumSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        caramelCMediumSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        caramelCMediumSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        caramelCMediumSubtract.setOpaque(true);
+        itemSelection.add(caramelCMediumSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, 15, 15));
+
+        caramelCPriceMedium.setForeground(new java.awt.Color(255, 255, 255));
+        caramelCPriceMedium.setText("₱95.00");
+        itemSelection.add(caramelCPriceMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 110, -1, -1));
+
+        caramelCLargeAdd.setBackground(new java.awt.Color(0, 153, 0));
+        caramelCLargeAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        caramelCLargeAdd.setForeground(new java.awt.Color(255, 255, 255));
+        caramelCLargeAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        caramelCLargeAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        caramelCLargeAdd.setOpaque(true);
+        itemSelection.add(caramelCLargeAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 110, 15, 15));
+
+        caramelCLargeSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        caramelCLargeSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        caramelCLargeSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        caramelCLargeSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        caramelCLargeSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        caramelCLargeSubtract.setOpaque(true);
+        itemSelection.add(caramelCLargeSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 110, 15, 15));
 
         decafD.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         decafD.setForeground(new java.awt.Color(255, 255, 255));
         decafD.setText("Decaf Delight");
         decafD.setContentAreaFilled(false);
-        decafD.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                decafDActionPerformed(evt);
+        itemSelection.add(decafD, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, -1, -1));
+
+        decafDSmallAdd.setBackground(new java.awt.Color(0, 153, 0));
+        decafDSmallAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        decafDSmallAdd.setForeground(new java.awt.Color(255, 255, 255));
+        decafDSmallAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        decafDSmallAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        decafDSmallAdd.setOpaque(true);
+        decafDSmallAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                decafDSmallAddMouseClicked(evt);
             }
         });
-        jPanel1.add(decafD, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 300, -1, -1));
+        itemSelection.add(decafDSmallAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 130, 15, 15));
+
+        decafDSmallSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        decafDSmallSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        decafDSmallSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        decafDSmallSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        decafDSmallSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        decafDSmallSubtract.setOpaque(true);
+        decafDSmallSubtract.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                decafDSmallSubtractMouseClicked(evt);
+            }
+        });
+        itemSelection.add(decafDSmallSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 130, 15, 15));
+
+        decafDPriceSmall.setForeground(new java.awt.Color(255, 255, 255));
+        decafDPriceSmall.setText("₱75.00");
+        itemSelection.add(decafDPriceSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, -1, -1));
+
+        decafDMediumAdd.setBackground(new java.awt.Color(0, 153, 0));
+        decafDMediumAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        decafDMediumAdd.setForeground(new java.awt.Color(255, 255, 255));
+        decafDMediumAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        decafDMediumAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        decafDMediumAdd.setOpaque(true);
+        itemSelection.add(decafDMediumAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 130, 15, 15));
+
+        decafDMediumSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        decafDMediumSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        decafDMediumSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        decafDMediumSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        decafDMediumSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        decafDMediumSubtract.setOpaque(true);
+        itemSelection.add(decafDMediumSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 130, 15, 15));
+
+        decafDPriceMedium.setForeground(new java.awt.Color(255, 255, 255));
+        decafDPriceMedium.setText("₱95.00");
+        itemSelection.add(decafDPriceMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 130, -1, -1));
+
+        decafDLargeAdd.setBackground(new java.awt.Color(0, 153, 0));
+        decafDLargeAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        decafDLargeAdd.setForeground(new java.awt.Color(255, 255, 255));
+        decafDLargeAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        decafDLargeAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        decafDLargeAdd.setOpaque(true);
+        itemSelection.add(decafDLargeAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 130, 15, 15));
+
+        decafDLargeSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        decafDLargeSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        decafDLargeSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        decafDLargeSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        decafDLargeSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        decafDLargeSubtract.setOpaque(true);
+        itemSelection.add(decafDLargeSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 130, 15, 15));
+
+        decafDPriceLarge.setForeground(new java.awt.Color(255, 255, 255));
+        decafDPriceLarge.setText("₱125.00");
+        itemSelection.add(decafDPriceLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 130, -1, -1));
 
         iceCoffee.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         iceCoffee.setForeground(new java.awt.Color(255, 255, 255));
         iceCoffee.setText("Iced Coffee");
         iceCoffee.setContentAreaFilled(false);
-        iceCoffee.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                iceCoffeeActionPerformed(evt);
+        itemSelection.add(iceCoffee, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
+
+        iceCoffeeSmallSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        iceCoffeeSmallSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        iceCoffeeSmallSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        iceCoffeeSmallSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iceCoffeeSmallSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        iceCoffeeSmallSubtract.setOpaque(true);
+        iceCoffeeSmallSubtract.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                iceCoffeeSmallSubtractMouseClicked(evt);
             }
         });
-        jPanel1.add(iceCoffee, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 320, -1, -1));
+        itemSelection.add(iceCoffeeSmallSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 15, 15));
+
+        iceCoffeePriceSmall.setForeground(new java.awt.Color(255, 255, 255));
+        iceCoffeePriceSmall.setText("₱75.00");
+        itemSelection.add(iceCoffeePriceSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, -1, -1));
+
+        iceCoffeeSmallAdd.setBackground(new java.awt.Color(0, 153, 0));
+        iceCoffeeSmallAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        iceCoffeeSmallAdd.setForeground(new java.awt.Color(255, 255, 255));
+        iceCoffeeSmallAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iceCoffeeSmallAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        iceCoffeeSmallAdd.setOpaque(true);
+        iceCoffeeSmallAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                iceCoffeeSmallAddMouseClicked(evt);
+            }
+        });
+        itemSelection.add(iceCoffeeSmallAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 150, 15, 15));
+
+        iceCoffeeMediumAdd.setBackground(new java.awt.Color(0, 153, 0));
+        iceCoffeeMediumAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        iceCoffeeMediumAdd.setForeground(new java.awt.Color(255, 255, 255));
+        iceCoffeeMediumAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iceCoffeeMediumAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        iceCoffeeMediumAdd.setOpaque(true);
+        itemSelection.add(iceCoffeeMediumAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 150, 15, 15));
+
+        iceCoffeeMediumSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        iceCoffeeMediumSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        iceCoffeeMediumSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        iceCoffeeMediumSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iceCoffeeMediumSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        iceCoffeeMediumSubtract.setOpaque(true);
+        itemSelection.add(iceCoffeeMediumSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 150, 15, 15));
+
+        iceCoffeePriceMedium.setForeground(new java.awt.Color(255, 255, 255));
+        iceCoffeePriceMedium.setText("₱95.00");
+        itemSelection.add(iceCoffeePriceMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 150, -1, -1));
+
+        iceCoffeeLargeAdd.setBackground(new java.awt.Color(0, 153, 0));
+        iceCoffeeLargeAdd.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        iceCoffeeLargeAdd.setForeground(new java.awt.Color(255, 255, 255));
+        iceCoffeeLargeAdd.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iceCoffeeLargeAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/add_icon.png"))); // NOI18N
+        iceCoffeeLargeAdd.setOpaque(true);
+        itemSelection.add(iceCoffeeLargeAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 150, 15, 15));
+
+        iceCoffeeLargeSubtract.setBackground(new java.awt.Color(204, 0, 0));
+        iceCoffeeLargeSubtract.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        iceCoffeeLargeSubtract.setForeground(new java.awt.Color(255, 255, 255));
+        iceCoffeeLargeSubtract.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        iceCoffeeLargeSubtract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Icons/subract_icon.png"))); // NOI18N
+        iceCoffeeLargeSubtract.setOpaque(true);
+        itemSelection.add(iceCoffeeLargeSubtract, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 150, 15, 15));
+
+        iceCoffeePriceLarge.setForeground(new java.awt.Color(255, 255, 255));
+        iceCoffeePriceLarge.setText("₱125.00");
+        itemSelection.add(iceCoffeePriceLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 150, -1, -1));
+
+        cheesecakePrice.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        cheesecakePrice.setForeground(new java.awt.Color(255, 255, 255));
+        cheesecakePrice.setText("₱99.00");
+        itemSelection.add(cheesecakePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 200, -1, -1));
+
+        croissantPrice.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        croissantPrice.setForeground(new java.awt.Color(255, 255, 255));
+        croissantPrice.setText("₱75.00");
+        itemSelection.add(croissantPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 220, -1, -1));
+
+        browniesPrice.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        browniesPrice.setForeground(new java.awt.Color(255, 255, 255));
+        browniesPrice.setText("₱75.00");
+        itemSelection.add(browniesPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 240, -1, -1));
+
+        strawBerryPrice.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        strawBerryPrice.setForeground(new java.awt.Color(255, 255, 255));
+        strawBerryPrice.setText("₱70.00");
+        itemSelection.add(strawBerryPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 260, -1, -1));
+
+        chocolatePrice.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        chocolatePrice.setForeground(new java.awt.Color(255, 255, 255));
+        chocolatePrice.setText("₱70.00");
+        itemSelection.add(chocolatePrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 280, -1, -1));
+
+        jCheckBox10.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jCheckBox10.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBox10.setText("Brownies");
+        jCheckBox10.setContentAreaFilled(false);
+        itemSelection.add(jCheckBox10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, 20));
 
         jCheckBox8.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jCheckBox8.setForeground(new java.awt.Color(255, 255, 255));
@@ -235,195 +784,45 @@ public class Menu extends javax.swing.JFrame {
                 jCheckBox8ActionPerformed(evt);
             }
         });
-        jPanel1.add(jCheckBox8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 360, -1, -1));
-
-        jCheckBox9.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jCheckBox9.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBox9.setText("Croissant");
-        jCheckBox9.setContentAreaFilled(false);
-        jPanel1.add(jCheckBox9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, -1, -1));
-
-        jCheckBox10.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jCheckBox10.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBox10.setText("Brownies");
-        jCheckBox10.setContentAreaFilled(false);
-        jPanel1.add(jCheckBox10, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 400, -1, -1));
-
-        jCheckBox11.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jCheckBox11.setForeground(new java.awt.Color(255, 255, 255));
-        jCheckBox11.setText("Strawberry Waffle");
-        jCheckBox11.setContentAreaFilled(false);
-        jPanel1.add(jCheckBox11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 420, -1, -1));
+        itemSelection.add(jCheckBox8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, -1, 20));
 
         jCheckBox12.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         jCheckBox12.setForeground(new java.awt.Color(255, 255, 255));
         jCheckBox12.setText("Chocolate Muffin");
         jCheckBox12.setContentAreaFilled(false);
-        jPanel1.add(jCheckBox12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 440, -1, -1));
+        itemSelection.add(jCheckBox12, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 280, -1, 20));
 
-        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel14.setForeground(new java.awt.Color(255, 102, 0));
-        jLabel14.setText("Small");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 180, -1, -1));
+        jCheckBox9.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jCheckBox9.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBox9.setText("Croissant");
+        jCheckBox9.setContentAreaFilled(false);
+        itemSelection.add(jCheckBox9, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 220, -1, 20));
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 102, 0));
-        jLabel15.setText("Medium");
-        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 180, -1, -1));
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel16.setForeground(new java.awt.Color(255, 102, 0));
-        jLabel16.setText("Large");
-        jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 180, -1, -1));
+            },
+            new String [] {
+                "Item", "Price"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Double.class
+            };
 
-        cappuccinoBtns.add(cSmall);
-        cSmall.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        cSmall.setForeground(new java.awt.Color(255, 255, 255));
-        cSmall.setText("₱70.00");
-        cSmall.setContentAreaFilled(false);
-        cSmall.setEnabled(false);
-        jPanel1.add(cSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 240, -1, -1));
-
-        americanoBtns.add(aSmall);
-        aSmall.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        aSmall.setForeground(new java.awt.Color(255, 255, 255));
-        aSmall.setText("₱40.00");
-        aSmall.setContentAreaFilled(false);
-        aSmall.setEnabled(false);
-        aSmall.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aSmallActionPerformed(evt);
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
             }
         });
-        jPanel1.add(aSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 220, -1, -1));
+        jScrollPane2.setViewportView(jTable2);
 
-        cMacchiatoBtns.add(cMSmall);
-        cMSmall.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        cMSmall.setForeground(new java.awt.Color(255, 255, 255));
-        cMSmall.setText("₱90.00");
-        cMSmall.setContentAreaFilled(false);
-        cMSmall.setEnabled(false);
-        jPanel1.add(cMSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 260, -1, -1));
+        itemSelection.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 200, 250, 100));
 
-        cCreamBtns.add(ccSmall);
-        ccSmall.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        ccSmall.setForeground(new java.awt.Color(255, 255, 255));
-        ccSmall.setText("₱70.00");
-        ccSmall.setContentAreaFilled(false);
-        ccSmall.setEnabled(false);
-        jPanel1.add(ccSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 280, -1, -1));
-
-        dDelightBtns.add(ddSmall);
-        ddSmall.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        ddSmall.setForeground(new java.awt.Color(255, 255, 255));
-        ddSmall.setText("₱35.00");
-        ddSmall.setContentAreaFilled(false);
-        ddSmall.setEnabled(false);
-        jPanel1.add(ddSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 300, -1, -1));
-
-        iCoffeeBtns.add(icSmall);
-        icSmall.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        icSmall.setForeground(new java.awt.Color(255, 255, 255));
-        icSmall.setText("₱40.00");
-        icSmall.setContentAreaFilled(false);
-        icSmall.setEnabled(false);
-        jPanel1.add(icSmall, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 320, -1, -1));
-
-        cappuccinoBtns.add(cMedium);
-        cMedium.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        cMedium.setForeground(new java.awt.Color(255, 255, 255));
-        cMedium.setText("₱120.00");
-        cMedium.setContentAreaFilled(false);
-        cMedium.setEnabled(false);
-        jPanel1.add(cMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 240, -1, -1));
-
-        americanoBtns.add(aMedium);
-        aMedium.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        aMedium.setForeground(new java.awt.Color(255, 255, 255));
-        aMedium.setText("₱90.00");
-        aMedium.setContentAreaFilled(false);
-        aMedium.setEnabled(false);
-        jPanel1.add(aMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 220, -1, -1));
-
-        cMacchiatoBtns.add(cmMedium);
-        cmMedium.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        cmMedium.setForeground(new java.awt.Color(255, 255, 255));
-        cmMedium.setText("₱135.00");
-        cmMedium.setContentAreaFilled(false);
-        cmMedium.setEnabled(false);
-        jPanel1.add(cmMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 260, -1, -1));
-
-        cCreamBtns.add(ccMedium);
-        ccMedium.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        ccMedium.setForeground(new java.awt.Color(255, 255, 255));
-        ccMedium.setText("₱115.00");
-        ccMedium.setContentAreaFilled(false);
-        ccMedium.setEnabled(false);
-        jPanel1.add(ccMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 280, -1, -1));
-
-        dDelightBtns.add(ddMedium);
-        ddMedium.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        ddMedium.setForeground(new java.awt.Color(255, 255, 255));
-        ddMedium.setText("₱50.00");
-        ddMedium.setContentAreaFilled(false);
-        ddMedium.setEnabled(false);
-        jPanel1.add(ddMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 300, -1, -1));
-
-        iCoffeeBtns.add(icMedium);
-        icMedium.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        icMedium.setForeground(new java.awt.Color(255, 255, 255));
-        icMedium.setText("₱60.00");
-        icMedium.setContentAreaFilled(false);
-        icMedium.setEnabled(false);
-        jPanel1.add(icMedium, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 320, -1, -1));
-
-        cappuccinoBtns.add(cLarge);
-        cLarge.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        cLarge.setForeground(new java.awt.Color(255, 255, 255));
-        cLarge.setText("₱155.00");
-        cLarge.setContentAreaFilled(false);
-        cLarge.setEnabled(false);
-        jPanel1.add(cLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 240, -1, -1));
-
-        americanoBtns.add(aLarge);
-        aLarge.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        aLarge.setForeground(new java.awt.Color(255, 255, 255));
-        aLarge.setText("₱120.00");
-        aLarge.setContentAreaFilled(false);
-        aLarge.setEnabled(false);
-        jPanel1.add(aLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 220, -1, -1));
-
-        cMacchiatoBtns.add(cMLarge);
-        cMLarge.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        cMLarge.setForeground(new java.awt.Color(255, 255, 255));
-        cMLarge.setText("₱185.00");
-        cMLarge.setContentAreaFilled(false);
-        cMLarge.setEnabled(false);
-        jPanel1.add(cMLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 260, -1, -1));
-
-        cCreamBtns.add(ccLarge);
-        ccLarge.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        ccLarge.setForeground(new java.awt.Color(255, 255, 255));
-        ccLarge.setText("₱150.00");
-        ccLarge.setContentAreaFilled(false);
-        ccLarge.setEnabled(false);
-        jPanel1.add(ccLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 280, -1, -1));
-
-        dDelightBtns.add(ddLarge);
-        ddLarge.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        ddLarge.setForeground(new java.awt.Color(255, 255, 255));
-        ddLarge.setText("₱70.00");
-        ddLarge.setContentAreaFilled(false);
-        ddLarge.setEnabled(false);
-        jPanel1.add(ddLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 300, -1, -1));
-
-        iCoffeeBtns.add(icLarge);
-        icLarge.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        icLarge.setForeground(new java.awt.Color(255, 255, 255));
-        icLarge.setText("₱75.00");
-        icLarge.setContentAreaFilled(false);
-        icLarge.setEnabled(false);
-        jPanel1.add(icLarge, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 320, -1, -1));
+        jCheckBox11.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
+        jCheckBox11.setForeground(new java.awt.Color(255, 255, 255));
+        jCheckBox11.setText("Strawberry Waffle");
+        jCheckBox11.setContentAreaFilled(false);
+        itemSelection.add(jCheckBox11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, -1, 20));
 
         jButton1.setBackground(new java.awt.Color(255, 51, 0));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -433,114 +832,19 @@ public class Menu extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(498, 470, -1, -1));
+        itemSelection.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 310, -1, -1));
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("₱75.00");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(265, 400, -1, -1));
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 153, 0));
+        jLabel6.setText("Foods");
+        itemSelection.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 180, -1, -1));
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setText("₱70.00");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(265, 420, -1, -1));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 153, 0));
+        jLabel5.setText("Coffee");
+        itemSelection.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("₱70.00");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(265, 440, -1, -1));
-
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("₱99.00");
-        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(265, 360, -1, -1));
-
-        jLabel12.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setText("₱75.00");
-        jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(265, 380, -1, -1));
-
-        jLabel1.setBackground(new java.awt.Color(204, 0, 0));
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("-");
-        jLabel1.setOpaque(true);
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, 15, 15));
-
-        jLabel7.setBackground(new java.awt.Color(0, 153, 0));
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel7.setText("+");
-        jLabel7.setOpaque(true);
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 200, 15, 15));
-
-        jLabel13.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel13.setText("₱75.00");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 200, -1, -1));
-
-        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel17.setText("₱95.00");
-        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 200, -1, -1));
-
-        jLabel18.setBackground(new java.awt.Color(0, 153, 0));
-        jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel18.setText("+");
-        jLabel18.setOpaque(true);
-        jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 200, 15, 15));
-
-        jLabel19.setBackground(new java.awt.Color(204, 0, 0));
-        jLabel19.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setText("-");
-        jLabel19.setOpaque(true);
-        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 200, 15, 15));
-
-        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel20.setText("₱125.00");
-        jPanel1.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 200, -1, -1));
-
-        jLabel21.setBackground(new java.awt.Color(0, 153, 0));
-        jLabel21.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel21.setText("+");
-        jLabel21.setOpaque(true);
-        jPanel1.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, 15, 15));
-
-        jLabel22.setBackground(new java.awt.Color(204, 0, 0));
-        jLabel22.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel22.setText("-");
-        jLabel22.setOpaque(true);
-        jPanel1.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 200, 15, 15));
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Item", "Price"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable2);
-
-        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 360, 250, 100));
+        jPanel1.add(itemSelection, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 600, 350));
 
         backGround.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/Backgrounds/Menu.jpg"))); // NOI18N
         jPanel1.add(backGround, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 500));
@@ -553,100 +857,16 @@ public class Menu extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         setSize(new java.awt.Dimension(614, 508));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void aSmallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aSmallActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_aSmallActionPerformed
-
-    private void cappuccinoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cappuccinoActionPerformed
-        if(cappuccino.isSelected()){
-            cSmall.setEnabled(true);
-            cMedium.setEnabled(true);
-            cLarge.setEnabled(true);
-        }else{
-            cSmall.setEnabled(false);
-            cMedium.setEnabled(false); 
-            cLarge.setEnabled(false);
-        }
-            cSmall.setSelected(false);
-    }//GEN-LAST:event_cappuccinoActionPerformed
-
-    private void AmericanoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AmericanoActionPerformed
-      if(Americano.isSelected()){
-            aSmall.setEnabled(true);
-            aMedium.setEnabled(true);
-            aLarge.setEnabled(true);
-        }else{
-            aSmall.setEnabled(false); aSmall.setSelected(false);
-            aMedium.setEnabled(false); aMedium.setSelected(false);
-            aLarge.setEnabled(false); aLarge.setSelected(false);
-        }
-    }//GEN-LAST:event_AmericanoActionPerformed
-
     private void EspressoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EspressoActionPerformed
-//       if(Espresso.isSelected()){
-//            eSmall.setEnabled(true);
-//            eMedium.setEnabled(true);
-//            eLarge.setEnabled(true);
-//        }else{
-//            eSmall.setEnabled(false); eSmall.setSelected(false);
-//            eMedium.setEnabled(false); eMedium.setSelected(false);
-//            eLarge.setEnabled(false); eLarge.setSelected(false);
-//        }
+
     }//GEN-LAST:event_EspressoActionPerformed
-
-    private void macchiatoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_macchiatoActionPerformed
-        if(macchiato.isSelected()){
-            cMSmall.setEnabled(true);
-            cmMedium.setEnabled(true);
-            cMLarge.setEnabled(true);
-        }else{
-            cMSmall.setEnabled(false); cMSmall.setSelected(false);
-            cmMedium.setEnabled(false); cmMedium.setSelected(false);
-            cMLarge.setEnabled(false); cMLarge.setSelected(false);
-        }
-    }//GEN-LAST:event_macchiatoActionPerformed
-
-    private void caramelCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_caramelCActionPerformed
- if(caramelC.isSelected()){
-            ccSmall.setEnabled(true);
-            ccMedium.setEnabled(true);
-            ccLarge.setEnabled(true);
-        }else{
-            ccSmall.setEnabled(false); ccSmall.setSelected(false);
-            ccMedium.setEnabled(false); ccMedium.setSelected(false);
-            ccLarge.setEnabled(false); ccLarge.setSelected(false);
-        }    }//GEN-LAST:event_caramelCActionPerformed
-
-    private void decafDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decafDActionPerformed
-        if(decafD.isSelected()){
-            ddSmall.setEnabled(true);
-            ddMedium.setEnabled(true);
-            ddLarge.setEnabled(true);
-        }else{
-            ddSmall.setEnabled(false); ddSmall.setSelected(false);
-            ddMedium.setEnabled(false); ddMedium.setSelected(false);
-            ddLarge.setEnabled(false); ddLarge.setSelected(false);
-        }
-    }//GEN-LAST:event_decafDActionPerformed
-
-    private void iceCoffeeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_iceCoffeeActionPerformed
-        if(iceCoffee.isSelected()){
-            icSmall.setEnabled(true);
-           icMedium.setEnabled(true);
-            icLarge.setEnabled(true);
-        }else{
-            icSmall.setEnabled(false); icSmall.setSelected(false);
-            icMedium.setEnabled(false); icMedium.setSelected(false);
-            icLarge.setEnabled(false); icLarge.setSelected(false);
-        }
-    }//GEN-LAST:event_iceCoffeeActionPerformed
 
     private void jCheckBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox8ActionPerformed
         // TODO add your handling code here:
@@ -658,13 +878,74 @@ public class Menu extends javax.swing.JFrame {
     this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        if(Espresso.isSelected()) setTable("Cappuccino", true);
-    }//GEN-LAST:event_jLabel7MouseClicked
+    private void espressoSmallSubtractMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_espressoSmallSubtractMouseClicked
+        if(Espresso.isSelected()){
+            setItem("Espresso S", 75.00, false);
+            setTable();
+        }
+    }//GEN-LAST:event_espressoSmallSubtractMouseClicked
 
-    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        if(Espresso.isSelected())  setTable("Cappuccino", false);
-    }//GEN-LAST:event_jLabel1MouseClicked
+    private void espressoSmallAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_espressoSmallAddMouseClicked
+        if(Espresso.isSelected()) setItem("Espresso S", 75.00, true);
+        if(Espresso.isSelected()) setTable();
+    }//GEN-LAST:event_espressoSmallAddMouseClicked
+
+    private void americanoSmallAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_americanoSmallAddMouseClicked
+        if(Americano.isSelected()) setItem("Americano S", 70.00, true);
+        if(Americano.isSelected()) setTable();
+    }//GEN-LAST:event_americanoSmallAddMouseClicked
+
+    private void americanoSmallSubtractMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_americanoSmallSubtractMouseClicked
+        if(Americano.isSelected()) setItem("Americano S", 70.00, false);
+        if(Americano.isSelected()) setTable();
+    }//GEN-LAST:event_americanoSmallSubtractMouseClicked
+
+    private void cappuccinoSmallAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cappuccinoSmallAddMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cappuccinoSmallAddMouseClicked
+
+    private void cappuccinoSmallSubtractMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cappuccinoSmallSubtractMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cappuccinoSmallSubtractMouseClicked
+
+    private void macchiatoSmallAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_macchiatoSmallAddMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_macchiatoSmallAddMouseClicked
+
+    private void macchiatoSmallSubtractMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_macchiatoSmallSubtractMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_macchiatoSmallSubtractMouseClicked
+
+    private void caramelCSmallAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_caramelCSmallAddMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_caramelCSmallAddMouseClicked
+
+    private void caramelCSmallSubtractMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_caramelCSmallSubtractMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_caramelCSmallSubtractMouseClicked
+
+    private void decafDSmallAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decafDSmallAddMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_decafDSmallAddMouseClicked
+
+    private void decafDSmallSubtractMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_decafDSmallSubtractMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_decafDSmallSubtractMouseClicked
+
+    private void iceCoffeeSmallSubtractMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iceCoffeeSmallSubtractMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_iceCoffeeSmallSubtractMouseClicked
+
+    private void iceCoffeeSmallAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_iceCoffeeSmallAddMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_iceCoffeeSmallAddMouseClicked
+
+    private void espressoMediumAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_espressoMediumAddMouseClicked
+        if(Espresso.isSelected()){
+            setItem("Espresso M", 95.00, true);
+            setTable();
+        }
+    }//GEN-LAST:event_espressoMediumAddMouseClicked
 
    
     
@@ -703,67 +984,104 @@ public class Menu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox Americano;
     private javax.swing.JCheckBox Espresso;
-    private javax.swing.JCheckBox aLarge;
-    private javax.swing.JCheckBox aMedium;
-    private javax.swing.JCheckBox aSmall;
     private javax.swing.ButtonGroup americanoBtns;
+    private javax.swing.JLabel americanoLargeAdd;
+    private javax.swing.JLabel americanoLargeSubtract;
+    private javax.swing.JLabel americanoMediumAdd;
+    private javax.swing.JLabel americanoMediumSubtract;
+    private javax.swing.JLabel americanoPriceLarge;
+    private javax.swing.JLabel americanoPriceMedium;
+    private javax.swing.JLabel americanoPriceSmall;
+    private javax.swing.JLabel americanoSmallAdd;
+    private javax.swing.JLabel americanoSmallSubtract;
     private javax.swing.JLabel backGround;
+    private javax.swing.JLabel browniesPrice;
     private javax.swing.ButtonGroup cCreamBtns;
-    private javax.swing.JCheckBox cLarge;
-    private javax.swing.JCheckBox cMLarge;
-    private javax.swing.JCheckBox cMSmall;
     private javax.swing.ButtonGroup cMacchiatoBtns;
-    private javax.swing.JCheckBox cMedium;
-    private javax.swing.JCheckBox cSmall;
     private javax.swing.JCheckBox cappuccino;
     private javax.swing.ButtonGroup cappuccinoBtns;
+    private javax.swing.JLabel cappuccinoLargeAdd;
+    private javax.swing.JLabel cappuccinoLargeSubtract;
+    private javax.swing.JLabel cappuccinoMediumAdd;
+    private javax.swing.JLabel cappuccinoMediumSubtract;
+    private javax.swing.JLabel cappuccinoPriceLarge;
+    private javax.swing.JLabel cappuccinoPriceMedium;
+    private javax.swing.JLabel cappuccinoPriceSmall;
+    private javax.swing.JLabel cappuccinoSmallAdd;
+    private javax.swing.JLabel cappuccinoSmallSubtract;
     private javax.swing.JCheckBox caramelC;
-    private javax.swing.JCheckBox ccLarge;
-    private javax.swing.JCheckBox ccMedium;
-    private javax.swing.JCheckBox ccSmall;
-    private javax.swing.JCheckBox cmMedium;
+    private javax.swing.JLabel caramelCLargeAdd;
+    private javax.swing.JLabel caramelCLargeSubtract;
+    private javax.swing.JLabel caramelCMediumAdd;
+    private javax.swing.JLabel caramelCMediumSubtract;
+    private javax.swing.JLabel caramelCPriceLarge;
+    private javax.swing.JLabel caramelCPriceMedium;
+    private javax.swing.JLabel caramelCPriceSmall;
+    private javax.swing.JLabel caramelCSmallAdd;
+    private javax.swing.JLabel caramelCSmallSubtract;
+    private javax.swing.JLabel cheesecakePrice;
+    private javax.swing.JLabel chocolatePrice;
+    private javax.swing.JLabel croissantPrice;
     private javax.swing.ButtonGroup dDelightBtns;
-    private javax.swing.JCheckBox ddLarge;
-    private javax.swing.JCheckBox ddMedium;
-    private javax.swing.JCheckBox ddSmall;
     private javax.swing.JCheckBox decafD;
+    private javax.swing.JLabel decafDLargeAdd;
+    private javax.swing.JLabel decafDLargeSubtract;
+    private javax.swing.JLabel decafDMediumAdd;
+    private javax.swing.JLabel decafDMediumSubtract;
+    private javax.swing.JLabel decafDPriceLarge;
+    private javax.swing.JLabel decafDPriceMedium;
+    private javax.swing.JLabel decafDPriceSmall;
+    private javax.swing.JLabel decafDSmallAdd;
+    private javax.swing.JLabel decafDSmallSubtract;
     private javax.swing.ButtonGroup espressoBtns;
+    private javax.swing.JLabel espressoMediumAdd;
+    private javax.swing.JLabel espressoMediumSubtract;
+    private javax.swing.JLabel espressoPriceLarge;
+    private javax.swing.JLabel espressoPriceMedium;
+    private javax.swing.JLabel espressoPriceSmall;
+    private javax.swing.JLabel espressoSmallAdd;
+    private javax.swing.JLabel espressoSmallSubtract;
+    private javax.swing.JLabel espresssoLargeAdd;
+    private javax.swing.JLabel espresssoLargeSubtract;
+    private javax.swing.JLabel header;
+    private javax.swing.JLabel headerPriceLarge;
+    private javax.swing.JLabel headerPriceMedium;
+    private javax.swing.JLabel headerPriceSmall;
     private javax.swing.ButtonGroup iCoffeeBtns;
-    private javax.swing.JCheckBox icLarge;
-    private javax.swing.JCheckBox icMedium;
-    private javax.swing.JCheckBox icSmall;
     private javax.swing.JCheckBox iceCoffee;
+    private javax.swing.JLabel iceCoffeeLargeAdd;
+    private javax.swing.JLabel iceCoffeeLargeSubtract;
+    private javax.swing.JLabel iceCoffeeMediumAdd;
+    private javax.swing.JLabel iceCoffeeMediumSubtract;
+    private javax.swing.JLabel iceCoffeePriceLarge;
+    private javax.swing.JLabel iceCoffeePriceMedium;
+    private javax.swing.JLabel iceCoffeePriceSmall;
+    private javax.swing.JLabel iceCoffeeSmallAdd;
+    private javax.swing.JLabel iceCoffeeSmallSubtract;
+    private javax.swing.JPanel itemSelection;
     private javax.swing.JButton jButton1;
     private javax.swing.JCheckBox jCheckBox10;
     private javax.swing.JCheckBox jCheckBox11;
     private javax.swing.JCheckBox jCheckBox12;
     private javax.swing.JCheckBox jCheckBox8;
     private javax.swing.JCheckBox jCheckBox9;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable2;
     private javax.swing.JCheckBox macchiato;
+    private javax.swing.JLabel macchiatoLargeAdd;
+    private javax.swing.JLabel macchiatoLargeSubtract;
+    private javax.swing.JLabel macchiatoMediumAdd;
+    private javax.swing.JLabel macchiatoMediumSubtract;
+    private javax.swing.JLabel macchiatoPriceLarge;
+    private javax.swing.JLabel macchiatoPriceMedium;
+    private javax.swing.JLabel macchiatoPriceSmall;
+    private javax.swing.JLabel macchiatoSmallAdd;
+    private javax.swing.JLabel macchiatoSmallSubtract;
+    private javax.swing.JLabel menuLabell;
+    private javax.swing.JLabel strawBerryPrice;
+    private javax.swing.JLabel year;
     // End of variables declaration//GEN-END:variables
 }
