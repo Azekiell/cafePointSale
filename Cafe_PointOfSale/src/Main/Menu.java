@@ -6,49 +6,87 @@ import javax.swing.table.DefaultTableModel;
 
 public class Menu extends javax.swing.JFrame {
     DefaultTableModel table;
-    int tableRow = 0;
     String item[] = new String[99];
     int count[] = new int[99];
     int size[] = new int[99];
     double price[] = new double[99];
-    int j = 0;
-    
+        
     public Menu() {
         initComponents();
         table = new DefaultTableModel(new String[]{"Item", "Price"}, 0);
         jTable2.setModel(table);
     }
-
-    public int setTable(String name, boolean isAdding){
-        for(int i = 0; i < item.length; i++){
-            if(item[i] == name){
-                String t = table.getValueAt(i, 0).toString();
-                if(count[i] == 1 && !isAdding){
-                    item[i] = null;
-                    count[i] = 0;
-                    table.removeRow(i);
-                }else{
-                    if(isAdding){
-                        count[i]++;
-                    }else{
-                        count[i]--;
-                    }
-                    table.setValueAt(name +" x " +count[i], i, 0);
-                }
-                return 0;
-            }else if(item[i] == null){
-                item[i] = name;
-                table.setRowCount(i+1);
+    
+    public void setItem(String itemm, boolean isAdding){
+        int i = 0;
+        boolean loop = true;
+        while(loop){
+            if(item[i] == null){
+                item[i] = itemm;
                 count[i]++;
-                table.setValueAt(name +" x " +count[i], i, 0);
-                j++;
-                return 0;
+                loop = false;
+            }else if(item[i] == itemm){
+                if(isAdding){
+                    count[i]++;
+                }else{
+                    if(count[i] == 1){
+                        item[i] = "Occupied";
+                        table.removeRow(i);
+                    }
+                    count[i]--;
+                }
+                loop = false;
             }
+            i++;
         }
-        System.out.println(table.getRowCount());
-        System.out.println(item[0]);
-        return 0;
     }
+    
+    public void setTable(){
+        int tableRow = 0;
+        int i = 0;
+        for(int j = 0; j < 5; j++){
+            System.out.println(j +" : " +item[j]);
+        }
+        while(item[i] != null){
+            if(item[i] != "Occupied"){
+                tableRow++;
+                table.setRowCount(tableRow);
+                table.setValueAt(item[i] + " x " +count[i], tableRow-1, 0);
+            }
+            i++;
+        }
+    }
+
+//    public int setTable(String name, boolean isAdding){
+//        for(int i = 0; i < item.length; i++){
+//            if(item[i] == name){
+//                String t = table.getValueAt(i, 0).toString();
+//                if(count[i] == 1 && !isAdding){
+//                    item[i] = null;
+//                    count[i] = 0;
+//                    table.removeRow(i);
+//                }else{
+//                    if(isAdding){
+//                        count[i]++;
+//                    }else{
+//                        count[i]--;
+//                    }
+//                    table.setValueAt(name +" x " +count[i], i, 0);
+//                }
+//                return 0;
+//            }else if(item[i] == null){
+//                item[i] = name;
+//                table.setRowCount(i+1);
+//                count[i]++;
+//                table.setValueAt(name +" x " +count[i], i, 0);
+//                j++;
+//                return 0;
+//            }
+//        }
+//        System.out.println(table.getRowCount());
+//        System.out.println(item[0]);
+//        return 0;
+//    }
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -869,19 +907,23 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void espressoSmallSubtractMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_espressoSmallSubtractMouseClicked
-        if(Espresso.isSelected())  setTable("Cappuccino", false);
+        if(Espresso.isSelected()) setItem("Espresso", false);
+        if(Espresso.isSelected()) setTable();
     }//GEN-LAST:event_espressoSmallSubtractMouseClicked
 
     private void espressoSmallAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_espressoSmallAddMouseClicked
-        if(Espresso.isSelected()) setTable("Cappuccino", true);
+        if(Espresso.isSelected()) setItem("Espresso", true);
+        if(Espresso.isSelected()) setTable();
     }//GEN-LAST:event_espressoSmallAddMouseClicked
 
     private void americanoSmallAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_americanoSmallAddMouseClicked
-        // TODO add your handling code here:
+        if(Americano.isSelected()) setItem("Americano", true);
+        if(Americano.isSelected()) setTable();
     }//GEN-LAST:event_americanoSmallAddMouseClicked
 
     private void americanoSmallSubtractMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_americanoSmallSubtractMouseClicked
-        // TODO add your handling code here:
+        if(Americano.isSelected()) setItem("Americano", false);
+        if(Americano.isSelected()) setTable();
     }//GEN-LAST:event_americanoSmallSubtractMouseClicked
 
     private void cappuccinoSmallAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cappuccinoSmallAddMouseClicked
